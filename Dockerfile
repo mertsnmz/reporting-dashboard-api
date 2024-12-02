@@ -21,8 +21,8 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 
 RUN npm install
+RUN npm run build
 
 EXPOSE 80
-EXPOSE 5173
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=80 & npm run dev -- --host=0.0.0.0 --port=5173"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
