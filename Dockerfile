@@ -16,12 +16,12 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
+RUN npm install
+RUN npm run build
+
 RUN php artisan key:generate
 RUN php artisan config:cache
 RUN php artisan route:cache
-
-RUN npm install
-RUN npm run build
 
 EXPOSE 80
 
