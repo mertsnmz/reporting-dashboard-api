@@ -13,10 +13,6 @@ COPY . .
 
 RUN npm ci
 
-RUN ls -la resources/css/
-RUN cat resources/css/app.css
-RUN ls -la
-
 RUN npm run build
 
 RUN ls -la public/build/
@@ -51,8 +47,7 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && chown -R www-data:www-data . \
     && chmod -R 755 storage bootstrap/cache public/build
 
-RUN ls -la public/build
+RUN sed -i -e "s|/var/www/html|/var/www/html/public|g" /etc/apache2/sites-available/000-default.conf \
+    && sed -i -e "s|/var/www/html|/var/www/html/public|g" /etc/apache2/apache2.conf
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN ls -la public/build
