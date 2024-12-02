@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    && docker-php-ext-install pdo pdo_mysql
+    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean
 
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
@@ -17,6 +19,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install
+
 RUN npm run build
 
 RUN php artisan key:generate
