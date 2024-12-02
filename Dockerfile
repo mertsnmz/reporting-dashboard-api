@@ -8,17 +8,17 @@ RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 FROM node:20-alpine as node
 
 WORKDIR /app
+
 COPY package*.json ./
 COPY vite.config.js ./
 COPY postcss.config.js ./
 COPY tailwind.config.js ./
-
 RUN npm ci
 
 COPY resources/ resources/
+COPY public/ public/
 
 RUN npm run build
-
 RUN ls -la public/build
 
 FROM php:8.2-apache
@@ -51,7 +51,3 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && chmod -R 755 storage bootstrap/cache public/build
 
 RUN ls -la public/build
-
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
