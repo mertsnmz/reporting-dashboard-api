@@ -8,9 +8,20 @@ RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 FROM node:20-alpine as node
 
 WORKDIR /app
-COPY . .
+
+COPY package*.json ./
+COPY vite.config.js ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY resources/ ./resources/
+COPY public/ ./public/
+
 RUN npm ci
 RUN npm run build
+
+RUN echo "Build output contents:"
+RUN ls -la public/build/
+RUN cat public/build/manifest.json || echo "manifest.json not found"
 
 FROM php:8.2-apache
 
@@ -37,8 +48,10 @@ COPY --from=node /app/public/build/ public/build/
 
 COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html/storage && \
-    chmod -R 755 /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data . && \
+    chmod -R 755 storage && \
+    chmod -R 755 bootstrap/cache && \
+    chmod -R 755 public/build
 
-RUN ls -la /var/www/html/public
+RUN echo "Final build files check:"
+RUN ls -la public/build/
