@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Reporting API Dashboard')</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    @viteReactRefresh
     @vite('resources/css/app.css')
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
