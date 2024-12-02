@@ -1,21 +1,22 @@
-FROM php:8.2-fpm
+FROM mertsnmz/php-nginx-openresty:ubuntu22.04
 
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
+WORKDIR /app
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-WORKDIR /var/www
-
-COPY . /var/www
-
-RUN composer install --no-dev --optimize-autoloader
+COPY . .
 
 EXPOSE 80
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+
+COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY nginx.conf /etc/nginx/sites-available/default
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY php.ini /usr/local/etc/php/
+
+RUN composer install --optimize-autoloader --no-dev --no-scripts
+RUN php artisan key:generate
+RUN php artisan migrate --force
+RUN php artisan optimize
+
+RUN chmod -R 755 /app
+
+
+CMD ["sh", "-c", "php artisan octane:start --server=swoole --host=0.0.0.0 --port=8089 --workers=12 --task-workers=12 & /usr/local/openresty/bin/openresty -g 'daemon off;'"]
