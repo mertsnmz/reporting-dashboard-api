@@ -13,13 +13,14 @@ COPY package*.json ./
 COPY vite.config.js ./
 COPY postcss.config.js ./
 COPY tailwind.config.js ./
+
 RUN npm ci
 
 COPY resources/ resources/
 COPY public/ public/
 
 RUN npm run build
-RUN ls -la public/build
+RUN ls -la public/build/
 
 FROM php:8.2-apache
 
@@ -36,7 +37,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 
 WORKDIR /var/www/html
 
@@ -51,3 +52,8 @@ RUN mkdir -p storage/framework/{sessions,views,cache} \
     && chmod -R 755 storage bootstrap/cache public/build
 
 RUN ls -la public/build
+RUN test -f public/build/manifest.json || (echo "manifest.json not found" && exit 1)
+
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
