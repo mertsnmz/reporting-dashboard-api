@@ -23,6 +23,8 @@ RUN php artisan key:generate
 RUN php artisan config:cache
 RUN php artisan route:cache
 
-EXPOSE 80
+EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+EXPOSE 5173
+
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=8000 & npm run dev"]
