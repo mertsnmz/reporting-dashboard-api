@@ -13,18 +13,13 @@ COPY . .
 
 RUN npm ci
 
-RUN echo "=== Before Build ==="
-RUN ls -la resources/css/
-RUN ls -la resources/js/
-RUN cat vite.config.js
-
 RUN echo "=== Running Build ==="
 RUN NODE_ENV=production npm run build
-RUN echo "=== Build Complete ==="
+
+RUN cp public/build/.vite/manifest.json public/build/manifest.json || echo "Failed to copy manifest"
 
 RUN echo "=== Build Output ==="
 RUN ls -la public/build/
-RUN find public/build -type f
 RUN cat public/build/manifest.json || echo "!!! manifest.json missing !!!"
 
 FROM php:8.2-apache
@@ -59,5 +54,4 @@ RUN chown -R www-data:www-data . && \
 
 RUN echo "=== Final Container Check ==="
 RUN ls -la public/build/
-RUN find public/build -type f
 RUN cat public/build/manifest.json || echo "!!! Final manifest.json missing !!!"
