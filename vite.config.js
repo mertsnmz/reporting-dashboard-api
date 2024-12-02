@@ -8,19 +8,16 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
-        host: '0.0.0.0',
-        hmr: {
-            host: 'reporting-dashboard-api-cgid.onrender.com'
-        },
-    },
     build: {
         manifest: true,
         outDir: 'public/build',
-        rollupOptions: {
-            output: {
-                manualChunks: undefined,
-            },
-        },
     },
+    ...(process.env.NODE_ENV === 'development' ? {
+        server: {
+            host: '0.0.0.0',
+            hmr: {
+                host: 'localhost'
+            },
+        }
+    } : {})
 });
