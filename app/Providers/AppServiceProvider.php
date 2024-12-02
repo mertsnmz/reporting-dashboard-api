@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        config(['app.asset_url' => 'https://reporting-api-dashboard-83eadac0eef4.herokuapp.com']);
+        config(['app.asset_url' => 'https://reporting-dashboard-api-cgid.onrender.com']);
 
         if (env('APP_ENV') === 'production') {
             URL::forceScheme('https');
