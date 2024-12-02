@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update -y && apt-get install -y --fix-missing \
     libpq-dev \
     zip \
     unzip \
