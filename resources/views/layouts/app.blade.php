@@ -6,7 +6,7 @@
     <title>@yield('title', 'Reporting API Dashboard')</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 <body class="flex flex-col min-h-screen">
 <nav class="bg-gray-800 fixed w-full z-50">
