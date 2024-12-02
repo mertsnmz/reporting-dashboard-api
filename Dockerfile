@@ -1,34 +1,47 @@
-FROM php:8.2-fpm
+FROM composer:2.6 as composer
+
+COPY composer.json composer.lock /app/
+COPY database/ /app/database/
+
+RUN composer install \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist
+
+FROM node:20-alpine as node
 
 WORKDIR /app
-
-RUN apt-get update -y && apt-get install -y --fix-missing \
-    libpq-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql mbstring bcmath xml \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && apt-get clean
-
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
-
+COPY package.json package-lock.json ./
 COPY . .
-
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
-
-RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install
 RUN npm run build
 
-EXPOSE 8000
-EXPOSE 5173
+FROM php:8.2-apache
 
-CMD ["sh", "-c", "php artisan key:generate && php artisan config:cache && php artisan route:cache && php artisan serve --host=0.0.0.0 --port=8000 & npm run dev"]
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+RUN a2enmod rewrite
+
+WORKDIR /var/www/html
+
+COPY . /var/www/html/
+COPY --from=composer /app/vendor/ /var/www/html/vendor/
+COPY --from=node /app/public/build/ /var/www/html/public/build/
+
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage
