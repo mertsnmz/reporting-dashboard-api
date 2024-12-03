@@ -11,7 +11,7 @@
                 <div>
                     <label for="fromDate" class="block text-gray-700">From Date</label>
                     <input type="date" id="fromDate" name="fromDate"
-                           value="{{ $params['fromDate'] ?? now()->subDays(30)->format('Y-m-d') }}"
+                           value="{{ $params['fromDate'] ?? now()->subYears(30)->format('Y-m-d') }}"
                            class="w-full border border-gray-300 rounded p-2">
                 </div>
                 <div>
