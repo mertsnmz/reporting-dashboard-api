@@ -19,8 +19,12 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function showLoginForm(): Application|Factory|View
+    public function showLoginForm(): Application|Factory|View|RedirectResponse
     {
+        if (session('api_token')) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login');
     }
 
