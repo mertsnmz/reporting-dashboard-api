@@ -1,67 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel PSP Reporting Dashboard
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This Laravel application demonstrates how to leverage the PSP Reporting API to build a custom web application dashboard that displays insightful metrics and data visualizations.
 
-## About Laravel
+**Live Application:** https://reporting-dashboard-api-cgid.onrender.com/
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Introduction
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The PSP Reporting API provides access to most of the report data in PSP, enabling you to:
+- Build custom dashboards to display PSP API data
+- Automate complex reporting tasks to save time
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This project showcases how to integrate the PSP Reporting API with a Laravel application to create a powerful, custom reporting dashboard.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Fetches data from the PSP Reporting API, utilizing at least 4 endpoints:
+    - Merchant Login
+    - Transaction Report
+    - Transaction Query
+    - Get Transaction
+- Displays key metrics and KPIs in a visually appealing web interface
+- Offers interactive data visualizations and charts
+- Provides an easy-to-use interface to customize and filter reports
+- Automates complex reporting tasks to save time and effort
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone the repository:
+   ```
+   git clone git@github.com:mertsnmz/reporting-dashboard-api.git
+   ```
 
-## Laravel Sponsors
+2. Navigate to the project directory:
+   ```
+   cd reporting-dashboard-api
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Install the PHP dependencies using Composer:
+   ```
+   composer install
+   ```
 
-### Premium Partners
+4. Install the Node.js dependencies using npm:
+   ```
+   npm install
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5. Create a copy of the `.env.example` file and rename it to `.env`:
+   ```
+   cp .env.example .env
+   ```
+
+6. Generate an application key:
+   ```
+   php artisan key:generate
+   ```
+
+7. Update the `.env` file with your PSP Reporting API credentials and configuration:
+   ```
+   API_URL=api-url
+   API_KEY=your-api-key
+   API_SECRET=your-api-secret
+   ```
+
+8. Run the database migrations:
+   ```
+   php artisan migrate
+   ```
+
+9. Build the frontend assets:
+   ```
+   npm run build
+   ```
+
+10. Start the development server:
+    ```
+    php artisan serve
+    ```
+
+11. Access the web application dashboard in your browser at `http://localhost:8000`.
+
+## Usage
+
+- Log in to the web application using your credentials.
+- Navigate through the dashboard to view various metrics, charts, and visualizations.
+- Use the provided filters and options to customize the displayed data according to your needs.
+- Automate reporting tasks by leveraging the power of the PSP Reporting API and Laravel's scheduling capabilities.
+
+## API Documentation
+
+Refer to the [PSP Reporting API Documentation](path/to/api-documentation.pdf) for detailed information on the available endpoints, request parameters, and response formats.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# reporting-dashboard-api
+This project is open-source and available under the [MIT License](LICENSE).
